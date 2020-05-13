@@ -380,3 +380,239 @@ _方法，类，协议，结构体_ 等，推荐使用Xcode自带的document功�
       self?.updateUI(model)
     }
     ```
+
+## 权限控制
+
+遵循最小权限原则，除非需要，否则都用```private```修饰属性以及方法。
+
+* 推荐
+
+  ```swift
+  private let message = "Great Scott!"
+
+  class TimeMachine {  
+    private dynamic lazy var fluxCapacitor = FluxCapacitor()
+  }
+  ```
+
+* 不推荐
+
+  ```swift
+  fileprivate let message = "Great Scott!"
+
+  class TimeMachine {  
+    lazy dynamic private var fluxCapacitor = FluxCapacitor()
+  }
+  ```
+
+## 控制流
+
+### 用```for```代替```while```
+
+* 推荐
+
+  ```swift
+  for _ in 0..<3 {
+    print("Hello three times")
+  }
+
+  for (index, person) in attendeeList.enumerated() {
+    print("\(person) is at position #\(index)")
+  }
+
+  for index in stride(from: 0, to: items.count, by: 2) {
+    print(index)
+  }
+
+  for index in (0...3).reversed() {
+    print(index)
+  }
+  ```
+
+* 不推荐
+
+  ```swift
+  var i = 0
+  while i < 3 {
+    print("Hello three times")
+    i += 1
+  }
+
+
+  var i = 0
+  while i < attendeeList.count {
+    let person = attendeeList[i]
+    print("\(person) is at position #\(i)")
+    i += 1
+  }
+  ```
+
+### 二目运算符
+
+```?:```只有在能够提高代码可读性的情况下才使用，一般来说单一的条件判断才考虑使用。多于一个判断条件的情况下```?:```的可读性通常会比```if```差。通常```?:```最好的应用场景就是变量赋值的时候有一个条件判断。
+
+* 推荐
+
+  ```swift
+  let value = 5
+  result = value != 0 ? x : y
+
+  let isHorizontal = true
+  result = isHorizontal ? x : y
+  ```
+
+* 不推荐
+
+  ```swift
+  result = a > b ? x = c > d ? c : d : y
+  ```
+
+### 黄金路径
+
+开发的时候如果需要条件判断，尽量让核心代码在尽量靠左的地方运行。换句话说就是尽量减少```if```的嵌套，多用```guard```。
+
+* 推荐
+
+  ```swift
+  func computeFFT(context: Context?, inputData: InputData?) throws -> Frequencies {
+    guard let context = context else {
+      throw FFTError.noContext
+    }
+    guard let inputData = inputData else {
+      throw FFTError.noInputData
+    }
+
+    // use context and input to compute the frequencies
+    return frequencies
+  }
+  ```
+
+  ```swift
+  guard
+    let number1 = number1,
+    let number2 = number2,
+    let number3 = number3
+    else {
+      fatalError("impossible")
+  }
+  // do something with numbers
+  ```
+
+* 不推荐
+
+  ```swift
+  func computeFFT(context: Context?, inputData: InputData?) throws -> Frequencies {
+    if let context = context {
+      if let inputData = inputData {
+        // use context and input to compute the frequencies
+
+        return frequencies
+      } else {
+        throw FFTError.noInputData
+      }
+    } else {
+      throw FFTError.noContext
+    }
+  }
+  ```
+
+  ```swift
+  if let number1 = number1 {
+    if let number2 = number2 {
+      if let number3 = number3 {
+        // do something with numbers
+      } else {
+        fatalError("impossible")
+      }
+    } else {
+      fatalError("impossible")
+    }
+  } else {
+    fatalError("impossible")
+  }
+  ```
+  
+#### 异常处理
+
+异常一般用 `return`, `throw`, `break`, `continue`, 和 `fatalError()`处理。
+
+## 分号
+
+推荐少使用分号
+
+* 推荐
+
+  ```swift
+  let swift = "not a scripting language"
+  ```
+
+* 不推荐
+
+  ```swift
+  let swift = "not a scripting language";
+  ```
+
+## 括号
+
+条件判断的`()`在swit中是不必要的，建议不要使用。
+
+* 推荐
+
+  ```swift
+  if name == "Hello" {
+    print("World")
+  }
+  ```
+
+* 不推荐
+
+  ```swift
+  if (name == "Hello") {
+    print("World")
+  }
+  ```
+
+括号有时候为了增加代码可读性，还是有必要使用的。例如：
+
+  ```swift
+  let playerMark = (player == current ? "X" : "O")
+  ```
+
+## 多行字符串
+
+定义多行字符串的时候，字符串内容不要从第一行开始。
+
+* 推荐
+
+  ```swift
+  let message = """
+    You cannot charge the flux \
+    capacitor with a 9V battery.
+    You must use a super-charger \
+    which costs 10 credits. You currently \
+    have \(credits) credits available.
+    """
+  ```
+
+* 不推荐
+
+  ```swift
+  let message = """You cannot charge the flux \
+    capacitor with a 9V battery.
+    You must use a super-charger \
+    which costs 10 credits. You currently \
+    have \(credits) credits available.
+    """
+  ```
+
+* 不推荐
+
+  ```swift
+  let message = "You cannot charge the flux " +
+    "capacitor with a 9V battery.\n" +
+    "You must use a super-charger " +
+    "which costs 10 credits. You currently " +
+    "have \(credits) credits available."
+  ```
+
+## 
