@@ -10,11 +10,11 @@ _方法，类，协议，结构体_ 等，推荐使用Xcode自带的document功�
 
 * 使用方法：
 
-1. 按住⌘点击_方法，类，协议，结构体_ 名，在弹出的菜单选择_Add Documentation_即可自动生成注释，如下图。![add](./pic/adddocument.PNG)
-2. 光标在_方法，类，协议，结构体_ 定义那一行的情况下，使用快捷键 ⌃+⌘+/（可以自定义设置或者修改）
+  1. 按住⌘点击_方法，类，协议，结构体_ 名，在弹出的菜单选择_Add Documentation_即可自动生成注释，如下图。![add](./pic/adddocument.PNG)
+  2. 光标在_方法，类，协议，结构体_ 定义那一行的情况下，使用快捷键 ⌃+⌘+/（可以自定义设置或者修改）
 
 * 一般来说参数，返回值都需要明确注释以便日后维护。使用add document添加注释之后,按住⌥点击方法名，可以有明确的注释出现，如下图。
-![show](./pic/showdocument.png)
+ ![show](./pic/showdocument.png)
 
 * 示例
 
@@ -25,23 +25,24 @@ _方法，类，协议，结构体_ 等，推荐使用Xcode自带的document功�
   func getLessonTimeWithTimestamp(timestamp:String?) -> String
   ```
 
-![show](./pic/showdocument.png)
+    ![show](./pic/showdocument.png)
+* [document的更多用法](https://swift.org/documentation/api-design-guidelines/)
 
 ### 注释规范
 
 * **注释必须及时更新或删除**
 
- 在使用版本控制的情况下。无效的代码或者注释及时删掉，如果不确定代码以后有没有可能用到，提交时写好commit，保证在需要的时候能找回来即可。
+    在使用版本控制的情况下。无效的代码或者注释及时删掉，如果不确定代码以后有没有可能用到，提交时写好commit，保证在需要的时候能找回来即可。
 
- 注释掉的代码，90%都不会再用到。
+    注释掉的代码，90%都不会再用到。
 
 * 注释的作用是解释“为什么这么做”，而不是“做了些什么”
 
   * 示例：
-  * 做了些什么（不推荐）
-  ![what](./pic/whatcomment.png)
-  * 为什么这么做（推荐）
-  ![why](./pic/whycomment.png)
+    * 做了些什么（不推荐）
+    ![what](./pic/whatcomment.png)
+    * 为什么这么做（推荐）
+    ![why](./pic/whycomment.png)
 
 * 少使用`/* ... */`，尽可能地用`//`或`///`代替。[为什么](https://stackoverflow.com/questions/61022236/why-the-need-to-avoid-c-style-comments-in-swift)
 
@@ -49,17 +50,33 @@ _方法，类，协议，结构体_ 等，推荐使用Xcode自带的document功�
 
 * 清晰的优先级是高于简洁的
 * classes, structures, enumerations and protocols 等类型名字以首字母大写驼峰命名。变量、方法名以小写驼峰方式命名，不要使用下划线
+
+    示例：
+
+    ```Swift
+    let maximumNumberOfLoginAttempts = 10
+    var currentLoginAttempt = 0
+    ```
+
 * 缩写和简写应该要尽量避免，遵守苹果命名规范，缩写和简写中的所有字符大小写要一致。
+
+    ```Swift
+    let decimalInteger = 17
+    let binaryInteger = 0b10001       // 17 in binary notation
+    let octalInteger = 0o21           // 17 in octal notation
+    let hexadecimalInteger = 0x11     // 17 in hexadecimal notation
+    ```
+
 * 根据规则命名而不是根据类型命名
   * 推荐
 
     ```Swift
-    var greeting = "Hello"
+    var string = "Hello"
     protocol ViewController {
-    associatedtype ContentView : View
+      associatedtype ViewType : View
     }
     class ProductionLine {
-    func restock(from supplier: WidgetFactory)
+      func restock(from widgetFactory: WidgetFactory)
     }
     ```
 
@@ -76,6 +93,65 @@ _方法，类，协议，结构体_ 等，推荐使用Xcode自带的document功�
     ```
 
 * 不要有拼写错误，发现后立刻改过来，方便以后全局搜索
+
+## 方法相关
+
+* 清晰是首要目标
+
+    尽可能地避免歧义。
+  * 推荐
+
+    ```Swift
+    extension List {
+        public mutating func remove(at position: Index) -> Element
+    }
+    employees.remove(at: x)
+    ```
+
+  * 不推荐
+
+    ```Swift
+    extension List {
+        public mutating func remove(position: Index) -> Element
+    }
+    employees.remove(x) // 不清晰: x是下标还是元素?
+    ```
+
+  参数使用规则尽量明确，必要时加上一些名词或介词进行补充说明。
+  * 推荐
+
+    ```Swift
+    func addObserver(_ observer: NSObject, forKeyPath path: String)
+    grid.addObserver(self, forKeyPath: graphics) 
+    ```
+
+  * 不推荐
+
+    ```Swift
+    func add(_ observer: NSObject, for keyPath: String)
+
+    grid.add(self, for: graphics) 
+    ```
+
+* 保证清晰的前提下尽量简洁
+
+  * 推荐
+
+    ```Swift
+    public mutating func remove(_ member: Element) -> Element?
+
+    allViews.remove(cancelButton)
+    ```
+
+  * 不推荐
+
+    ```Swift
+    public mutating func removeElement(_ member: Element) -> Element?
+
+    allViews.removeElement(cancelButton)
+    ```
+
+* 使用document功能生成注释（[详见注释部分](###Xcode的document功能)）
 
 ## 代码结构
 
