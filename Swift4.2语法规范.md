@@ -615,4 +615,28 @@ _方法，类，协议，结构体_ 等，推荐使用Xcode自带的document功�
     "have \(credits) credits available."
   ```
 
-## 
+## 懒加载
+
+一般情况下推荐使用懒加载方式来定义对象。例子如下：
+
+```Swift
+lazy var imageV:UIImageView = {
+   let view = UIImageView()
+    view.contentMode = .scaleAspectFit
+    view.clipsToBounds = true
+    view.image = CourseDetailConfig.placeholderImage()
+    return view
+}()
+```
+
+```swift
+lazy var locationManager = makeLocationManager()
+
+private func makeLocationManager() -> CLLocationManager {
+  let manager = CLLocationManager()
+  manager.desiredAccuracy = kCLLocationAccuracyBest
+  manager.delegate = self
+  manager.requestAlwaysAuthorization()
+  return manager
+}
+```
