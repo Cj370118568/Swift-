@@ -98,12 +98,12 @@ _方法，类，协议，结构体_ 等，推荐使用Xcode自带的document功�
   * 推荐
 
     ```Swift
-    var string = "Hello"
+    var greeting = "Hello"
     protocol ViewController {
-      associatedtype ViewType : View
+      associatedtype ContentView : View
     }
     class ProductionLine {
-      func restock(from widgetFactory: WidgetFactory)
+      func restock(from supplier: WidgetFactory)
     }
     ```
 
