@@ -640,3 +640,11 @@ private func makeLocationManager() -> CLLocationManager {
   return manager
 }
 ```
+
+## 参考
+
+* [apple API Design Guidelines](https://swift.org/documentation/api-design-guidelines/)
+
+* [raywenderlich](https://github.com/raywenderlich/swift-style-guide/blob/master/README.markdown)
+
+* [Swift.org](https://swift.org/documentation/#the-swift-programming-language)
